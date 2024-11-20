@@ -25,3 +25,18 @@ jobs:
           README.md
           w2l.exe
           w3x2lni.exe
+    - name: Calculate the hash value  
+      if: ${{ success() }}
+      run: |
+        Get-FileHash .\w3x2lni-win.zip | Format-List
+
+    - name: Release
+      if: ${{ success() }}
+      uses: softprops/action-gh-release@v2
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        name: w3x2lni
+        make_latest: ${{ inputs.make_latest }}
+        prerelease: ${{ inputs.prerelease }}
+        files: |
+          w3x2lni-win.zip
